@@ -5,7 +5,8 @@ import telebot
 token = ""
 chat_id = ""  # Pode ser um número inteiro ou string
 bot = telebot.TeleBot(token)
-diretorio = "/sdcard/MT2/logs" 
+#diretorio = "/sdcard/MT2/logs"  
+diretorio = "logs"  # teste
 
 if not os.path.exists(diretorio):
     os.makedirs(diretorio)
@@ -13,6 +14,7 @@ if not os.path.exists(diretorio):
 arquivos_log = [f for f in os.listdir(diretorio) if f.endswith('.log')]
 
 if arquivos_log:
+    print(f"\nEnviando Payloads, aguarde...\n")
     payloads = []
     for arquivo_log in arquivos_log:
         filepath = os.path.join(diretorio, arquivo_log)
@@ -23,9 +25,11 @@ if arquivos_log:
                     try:
                         bot.send_message(chat_id, linha.strip(), disable_web_page_preview=True)
                     except Exception as e:
-                        print(f"Erro ao enviar mensagem: {e}")
-        os.remove(filepath)  # Opcional: remove o arquivo após o envio
-    
+                        #print(f"Erro ao enviar mensagem: {e}")
+                        continue
+        os.remove(filepath)  # Remove o arquivo após o envio
+        print(f'Payloads extraidas com sucesso.\n')
+
     if payloads:
         # Criar e enviar o arquivo de payloads extraídos
         arquivo_payloads = "Payloads Extraidas.txt"
@@ -36,12 +40,12 @@ if arquivos_log:
         try:
             with open(arquivo_payloads, 'rb') as file:
                 bot.send_document(chat_id, file)
+            print("Arquivo de Payloads enviadao com sucesso! Verifique o bot no Telegram")
         except Exception as e:
             print(f"Erro ao enviar o arquivo: {e}")
         
         os.remove(arquivo_payloads)  # Remove o arquivo após o envio
 
-    # Opcional: Remove o diretório após o envio dos arquivos
-    os.rmdir(diretorio)
 else:
     bot.send_message(chat_id, "Logs não estão disponíveis.")
+    print('Logs indisponíveis')
