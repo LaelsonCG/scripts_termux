@@ -3,10 +3,9 @@ import telebot
 
 # Substitua pelo seu token do Telegram
 token = ""
-chat_id = ""  # Pode ser um número inteiro ou string
+chat_id = "" 
 bot = telebot.TeleBot(token)
-#diretorio = "/sdcard/MT2/logs"  
-diretorio = "logs"  # teste
+diretorio = "/sdcard/MT2/logs"
 
 if not os.path.exists(diretorio):
     os.makedirs(diretorio)
